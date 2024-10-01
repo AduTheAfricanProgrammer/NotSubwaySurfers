@@ -1,0 +1,168 @@
+[gd_scene load_steps=11 format=3 uid="uid://cos70hli6h64v"]
+
+[ext_resource type="Script" path="res://scenes/boss_weakness.gd" id="1_m84rk"]
+[ext_resource type="PackedScene" uid="uid://hxy42mdqlx25" path="res://scenes/healthbar.tscn" id="2_1efl7"]
+[ext_resource type="Texture2D" uid="uid://dbbxwy7bo5yp4" path="res://assests/Textures/istockphoto-527814399-612x612.jpg" id="3_7r1ij"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uvbft"]
+size = Vector3(1, 5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n6kkc"]
+size = Vector3(1, 5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nyilg"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_etadq"]
+material = SubResource("StandardMaterial3D_nyilg")
+size = Vector3(0.5, 1.8, 1.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i8i2l"]
+size = Vector3(0.5, 1.8, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t55kt"]
+albedo_texture = ExtResource("3_7r1ij")
+
+[sub_resource type="QuadMesh" id="QuadMesh_wgl1d"]
+material = SubResource("StandardMaterial3D_t55kt")
+
+[node name="Boss" type="Boss"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_uvbft")
+
+[node name="Label3D" type="Label3D" parent="MeshInstance3D"]
+transform = Transform3D(-1.56834e-07, 0, 1, 0, 4.22993, 0, -3.58795, 0, -4.37114e-08, 0.617685, 0.720302, 0)
+text = "Normal"
+
+[node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("BoxShape3D_n6kkc")
+
+[node name="Weaknesses" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -1, 0)
+
+[node name="bottom_left" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/bottom_left"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2.8)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/bottom_left/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/bottom_left/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="top_right" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/top_right"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 2.8)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/top_right/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/top_right/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="top_center" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/top_center"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/top_center/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/top_center/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="top_left" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/top_left"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -2.8)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/top_left/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/top_left/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="bottom_right" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/bottom_right"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 2.8)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/bottom_right/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/bottom_right/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="bottom_center" type="Node3D" parent="Weaknesses"]
+visible = false
+script = ExtResource("1_m84rk")
+
+[node name="model" type="MeshInstance3D" parent="Weaknesses/bottom_center"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+mesh = SubResource("BoxMesh_etadq")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Weaknesses/bottom_center/model"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Weaknesses/bottom_center/model/Area3D"]
+shape = SubResource("BoxShape3D_i8i2l")
+
+[node name="healthbar" parent="." instance=ExtResource("2_1efl7")]
+transform = Transform3D(4.81528, 0, 0, 0, 3.69838, 0, 0, 0, 1.03842, 0, 3.60926, 0)
+
+[node name="Face" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.96701e-07, 0, 4.5, 0, 4.5, 0, -4.5, 0, -1.96701e-07, 0.503933, 0, 0)
+mesh = SubResource("QuadMesh_wgl1d")
+
+[connection signal="start" from="Weaknesses/bottom_left" to="Weaknesses/bottom_left" method="_on_start"]
+[connection signal="stop" from="Weaknesses/bottom_left" to="Weaknesses/bottom_left" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/bottom_left/model/Area3D" to="Weaknesses/bottom_left" method="_on_area_3d_area_entered"]
+[connection signal="start" from="Weaknesses/top_right" to="Weaknesses/top_right" method="_on_start"]
+[connection signal="stop" from="Weaknesses/top_right" to="Weaknesses/top_right" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/top_right/model/Area3D" to="Weaknesses/top_right" method="_on_area_3d_area_entered"]
+[connection signal="start" from="Weaknesses/top_center" to="Weaknesses/top_center" method="_on_start"]
+[connection signal="stop" from="Weaknesses/top_center" to="Weaknesses/top_center" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/top_center/model/Area3D" to="Weaknesses/top_center" method="_on_area_3d_area_entered"]
+[connection signal="start" from="Weaknesses/top_left" to="Weaknesses/top_left" method="_on_start"]
+[connection signal="stop" from="Weaknesses/top_left" to="Weaknesses/top_left" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/top_left/model/Area3D" to="Weaknesses/top_left" method="_on_area_3d_area_entered"]
+[connection signal="start" from="Weaknesses/bottom_right" to="Weaknesses/bottom_right" method="_on_start"]
+[connection signal="stop" from="Weaknesses/bottom_right" to="Weaknesses/bottom_right" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/bottom_right/model/Area3D" to="Weaknesses/bottom_right" method="_on_area_3d_area_entered"]
+[connection signal="start" from="Weaknesses/bottom_center" to="Weaknesses/bottom_center" method="_on_start"]
+[connection signal="stop" from="Weaknesses/bottom_center" to="Weaknesses/bottom_center" method="_on_stop"]
+[connection signal="area_entered" from="Weaknesses/bottom_center/model/Area3D" to="Weaknesses/bottom_center" method="_on_area_3d_area_entered"]

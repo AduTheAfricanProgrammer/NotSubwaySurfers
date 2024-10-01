@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx7tgd0oreamy"]
+
+[ext_resource type="Script" path="res://floor_attack.gd" id="1_lhxft"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tq3ot"]
+top_radius = 0.4
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_btel8"]
+transparency = 1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ud6fv"]
+radius = 0.4
+
+[node name="floor_attack" type="Node3D"]
+script = ExtResource("1_lhxft")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-2.13163e-07, -4.87659, -4.37114e-08, 0, -2.13163e-07, 1, -4.87659, 2.13163e-07, 1.91069e-15, 0, 0, 0)
+modulate = Color(0.788235, 0, 0, 1)
+text = "3"
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="model" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+mesh = SubResource("CylinderMesh_tq3ot")
+surface_material_override/0 = SubResource("ORMMaterial3D_btel8")
+
+[node name="Area3D" type="Area3D" parent="model"]
+metadata/is_hurt = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="model/Area3D"]
+transform = Transform3D(1.10581, 0, 0, 0, 1.10581, 0, 0, 0, 1.10581, 0, 0, 0)
+shape = SubResource("CylinderShape3D_ud6fv")
+
+[node name="end" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="reset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0i0vs46fgvgp"]
+
+[ext_resource type="Script" path="res://demo.gd" id="1_8ew03"]
+[ext_resource type="PackedScene" uid="uid://bx7tgd0oreamy" path="res://scenes/floor_attack.tscn" id="1_oa2pr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_opank"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_s6mcn"]
+sky_material = SubResource("ProceduralSkyMaterial_opank")
+
+[sub_resource type="Environment" id="Environment_wutkc"]
+background_mode = 2
+sky = SubResource("Sky_s6mcn")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.0313726, 0.25098, 0.305882, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v41e5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cgojk"]
+material = SubResource("StandardMaterial3D_v41e5")
+size = Vector3(10, 0.5, 10)
+
+[node name="Demo" type="Node3D"]
+script = ExtResource("1_8ew03")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wutkc")
+
+[node name="back_left" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 2.8)
+
+[node name="back_center" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+
+[node name="back_right" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, -2.8)
+
+[node name="front_left" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, 2.8)
+
+[node name="front_center" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, 0)
+
+[node name="front_right" parent="." instance=ExtResource("1_oa2pr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, -2.8)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.6, 0)
+mesh = SubResource("BoxMesh_cgojk")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1.93572e-08, -0.866025, 0.5, -2.6077e-08, 0.5, 0.866025, -1, 3.72529e-09, -3.2262e-08, 2.55397, 8.45134, 0.348907)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="reset" from="back_left" to="back_left" method="_on_reset"]
+[connection signal="start" from="back_left" to="back_left" method="_on_start"]
+[connection signal="reset" from="back_center" to="back_center" method="_on_reset"]
+[connection signal="start" from="back_center" to="back_center" method="_on_start"]
+[connection signal="reset" from="back_right" to="back_right" method="_on_reset"]
+[connection signal="start" from="back_right" to="back_right" method="_on_start"]
+[connection signal="reset" from="front_left" to="front_left" method="_on_reset"]
+[connection signal="start" from="front_left" to="front_left" method="_on_start"]
+[connection signal="reset" from="front_center" to="front_center" method="_on_reset"]
+[connection signal="start" from="front_center" to="front_center" method="_on_start"]
+[connection signal="reset" from="front_right" to="front_right" method="_on_reset"]
+[connection signal="start" from="front_right" to="front_right" method="_on_start"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

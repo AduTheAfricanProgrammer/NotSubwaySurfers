@@ -1,0 +1,185 @@
+[gd_scene load_steps=24 format=3 uid="uid://dq5xdvv1mg18p"]
+
+[ext_resource type="Script" path="res://Boss_Generator.gd" id="1_d0rau"]
+[ext_resource type="Script" path="res://scenes/boss_stage.gd" id="1_egg14"]
+[ext_resource type="PackedScene" uid="uid://cos70hli6h64v" path="res://scenes/boss.tscn" id="3_ev62v"]
+[ext_resource type="PackedScene" uid="uid://bx7tgd0oreamy" path="res://scenes/floor_attack.tscn" id="4_5xkjo"]
+[ext_resource type="Texture2D" uid="uid://bcamltq62li6p" path="res://assests/particles/Flare00.PNG" id="5_ea3lb"]
+[ext_resource type="Material" uid="uid://jktdfmfnvkrv" path="res://assests/particles/new_flash.tres" id="6_1d654"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ehlm"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("5_ea3lb")
+
+[sub_resource type="Curve" id="Curve_ogasn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_h4ypc"]
+max_value = 5.0
+_data = [Vector2(0, 5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_uqdup"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_bcd7t"]
+curve_x = SubResource("Curve_ogasn")
+curve_y = SubResource("Curve_h4ypc")
+curve_z = SubResource("Curve_uqdup")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gc0w6"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+particle_flag_align_y = true
+spread = 180.0
+gravity = Vector3(0, -20, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 25.0
+scale_min = 0.15
+scale_max = 0.5
+scale_curve = SubResource("CurveXYZTexture_bcd7t")
+color = Color(5, 2, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ubeev"]
+
+[sub_resource type="Curve" id="Curve_ctdr5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8k7ar"]
+curve = SubResource("Curve_ctdr5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kfwtr"]
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_8k7ar")
+color = Color(2.5, 1, 0.5, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hcjim"]
+
+[sub_resource type="Gradient" id="Gradient_m40p5"]
+offsets = PackedFloat32Array(0, 0.0144928, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.26087, 0.26087, 0.26087, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_utwjd"]
+gradient = SubResource("Gradient_m40p5")
+
+[sub_resource type="Curve" id="Curve_xyscr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_sh6bq"]
+curve = SubResource("Curve_xyscr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_neb67"]
+lifetime_randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 0.3
+spread = 180.0
+gravity = Vector3(0, -2, 0)
+scale_min = 3.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_sh6bq")
+color = Color(5, 2, 1, 1)
+color_ramp = SubResource("GradientTexture1D_utwjd")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ranmo"]
+
+[node name="boss_stage" type="Node3D"]
+script = ExtResource("1_egg14")
+
+[node name="Boss_Generator" type="Node3D" parent="."]
+script = ExtResource("1_d0rau")
+
+[node name="Floor_Attacks" type="Node3D" parent="."]
+
+[node name="back_left" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 2.8)
+
+[node name="back_center" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+
+[node name="back_right" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, -2.8)
+
+[node name="front_left" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, 2.8)
+
+[node name="front_center" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, 0)
+
+[node name="front_right" parent="Floor_Attacks" instance=ExtResource("4_5xkjo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4.2, -2.8)
+
+[node name="Boss" parent="." instance=ExtResource("3_ev62v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 6, 0)
+
+[node name="GDStateMachine" type="GDStateMachine" parent="Boss"]
+
+[node name="BossPattern1" type="BossPattern1" parent="Boss/GDStateMachine"]
+metadata/is_state = true
+
+[node name="BossPattern2" type="BossPattern2" parent="Boss/GDStateMachine"]
+metadata/is_state = true
+
+[node name="BossStagger" type="BossStagger" parent="Boss/GDStateMachine"]
+metadata/is_state = true
+
+[node name="explosion" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 6, 0)
+
+[node name="spark" type="GPUParticles3D" parent="explosion"]
+material_override = SubResource("StandardMaterial3D_2ehlm")
+emitting = false
+amount = 20
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_gc0w6")
+draw_pass_1 = SubResource("QuadMesh_ubeev")
+
+[node name="flash" type="GPUParticles3D" parent="explosion"]
+material_override = ExtResource("6_1d654")
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_kfwtr")
+draw_pass_1 = SubResource("QuadMesh_hcjim")
+
+[node name="fire" type="GPUParticles3D" parent="explosion"]
+material_override = ExtResource("6_1d654")
+emitting = false
+amount = 13
+lifetime = 0.88
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_neb67")
+draw_pass_1 = SubResource("QuadMesh_ranmo")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="reset" from="Floor_Attacks/back_left" to="Floor_Attacks/back_left" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/back_left" to="Floor_Attacks/back_left" method="_on_start"]
+[connection signal="reset" from="Floor_Attacks/back_center" to="Floor_Attacks/back_center" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/back_center" to="Floor_Attacks/back_center" method="_on_start"]
+[connection signal="reset" from="Floor_Attacks/back_right" to="Floor_Attacks/back_right" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/back_right" to="Floor_Attacks/back_right" method="_on_start"]
+[connection signal="reset" from="Floor_Attacks/front_left" to="Floor_Attacks/front_left" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/front_left" to="Floor_Attacks/front_left" method="_on_start"]
+[connection signal="reset" from="Floor_Attacks/front_center" to="Floor_Attacks/front_center" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/front_center" to="Floor_Attacks/front_center" method="_on_start"]
+[connection signal="reset" from="Floor_Attacks/front_right" to="Floor_Attacks/front_right" method="_on_reset"]
+[connection signal="start" from="Floor_Attacks/front_right" to="Floor_Attacks/front_right" method="_on_start"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

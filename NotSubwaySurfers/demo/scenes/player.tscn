@@ -1,0 +1,100 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjlogmm23egp8"]
+
+[sub_resource type="GDScript" id="GDScript_g37pe"]
+script/source = "extends CharacterBody3D
+
+@onready var death_sensor = $DeathSensor
+
+var positions = [-3,0,3]
+var curPos = 1
+
+var swipeLen = 100
+var startSwipe: Vector2
+var curSwipe: Vector2
+var swiping = false
+
+var threshold = 20
+var swipeDir = 0
+var pause = false
+
+const JUMP_VEL = 7
+var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"menu\"):
+		pause = not pause
+	
+	if pause:
+		return
+	
+	swipe()
+	if swipeDir == 1:
+		if curPos < 2:
+			curPos += 1
+			swipeDir = 0
+	elif swipeDir == -1:
+		if curPos > 0:
+			curPos -= 1
+			swipeDir = 0
+			
+	position.z = lerpf(position.z, positions[curPos],delta*30)
+	if death_sensor.is_colliding():
+		death()
+	
+	velocity.y -= gravity*delta
+	move_and_slide()
+	
+func swipe():
+	if Input.is_action_just_pressed(\"press\"):
+		if !swiping:
+			swiping = true
+			startSwipe = get_viewport().get_mouse_position()
+			
+	if Input.is_action_pressed(\"press\"):
+		if swiping:
+			curSwipe = get_viewport().get_mouse_position()
+			if startSwipe.distance_to(curSwipe) >= swipeLen:
+				
+				if abs(startSwipe.y-curSwipe.y) < threshold:
+					if startSwipe.x-curSwipe.x < 0:
+						swipeDir = 1
+					else:
+						swipeDir = -1
+				if abs(startSwipe.x-curSwipe.x) < threshold:
+					if startSwipe.y-curSwipe.y > 0 and is_on_floor():
+						velocity.y = JUMP_VEL
+						
+				swiping = false
+	else:
+		swiping = false
+
+func death():
+	get_tree().reload_current_scene()
+
+
+func _on_button_pressed():
+	pause = false
+	pass # Replace with function body.
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p17c4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lbg1r"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+script = SubResource("GDScript_g37pe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_p17c4")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lbg1r")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.00507488, -0.554418, 0.832223, -0.000760399, 0.832235, 0.554422, -0.999987, 0.0021808, -0.00464507, 3.02401, 3.1702, -0.0614077)
+fov = 94.9
+
+[node name="DeathSensor" type="RayCast3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, -5, 0)

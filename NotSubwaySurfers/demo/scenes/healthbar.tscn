@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://hxy42mdqlx25"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8yud0"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_we1mr"]
+resource_local_to_scene = true
+bg_color = Color(0, 1, 0, 1)
+
+[node name="healthbar" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture = SubResource("ViewportTexture_8yud0")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+size = Vector2i(250, 25)
+
+[node name="ProgressBar" type="ProgressBar" parent="Sprite3D/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_we1mr")
+value = 100.0

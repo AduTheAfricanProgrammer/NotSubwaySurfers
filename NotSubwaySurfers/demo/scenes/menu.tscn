@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=3 uid="uid://w8s04q6k22v0"]
+
+[ext_resource type="Script" path="res://menu.gd" id="1_1qmfv"]
+
+[node name="menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1qmfv")
+
+[node name="main" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="join_button" type="Button" parent="main"]
+layout_mode = 0
+offset_left = 461.0
+offset_top = 298.0
+offset_right = 699.0
+offset_bottom = 370.0
+theme_override_font_sizes/font_size = 25
+text = "Join"
+
+[node name="directions_button" type="Button" parent="main"]
+layout_mode = 0
+offset_left = 461.0
+offset_top = 388.0
+offset_right = 699.0
+offset_bottom = 460.0
+theme_override_font_sizes/font_size = 25
+text = "Directions"
+
+[node name="title" type="Label" parent="main"]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 194.0
+offset_right = 760.0
+offset_bottom = 252.0
+theme_override_font_sizes/font_size = 40
+text = "NOT Subway Surfer
+"
+
+[node name="directions" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="exit_button" type="Button" parent="directions"]
+layout_mode = 0
+offset_left = 478.0
+offset_top = 479.0
+offset_right = 683.0
+offset_bottom = 531.0
+theme_override_font_sizes/font_size = 20
+text = "Return to Menu"
+
+[node name="Label2" type="Label" parent="directions"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 164.0
+offset_right = 509.0
+offset_bottom = 432.0
+theme_override_font_sizes/font_size = 20
+text = "Controls:
+Keyboard: 
+    A - Move Left
+    D - Move Right
+    Space - Jump
+	Shift - Shoot
+    Escape - Pause menu
+"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="directions"]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 71.0
+offset_right = 990.0
+offset_bottom = 134.0
+theme_override_font_sizes/font_size = 20
+text = "Direction:  Continous game where you avoid obstacles. Live long enough to fight a boss!
+
+"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="directions"]
+layout_mode = 0
+offset_left = 592.0
+offset_top = 143.0
+offset_right = 992.0
+offset_bottom = 360.0
+theme_override_font_sizes/font_size = 20
+text = "
+Mouse: (pressed)
+    M1 swipe left - Move Left
+    M1 swipe right - Move Right
+M1 swipe up - Jump
+M2 (press) - Move forward
+M2 (release) - Move backwards if possible"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="main/join_button" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="main/directions_button" to="." method="_on_directions_button_pressed"]
+[connection signal="pressed" from="directions/exit_button" to="." method="_on_exit_button_pressed"]

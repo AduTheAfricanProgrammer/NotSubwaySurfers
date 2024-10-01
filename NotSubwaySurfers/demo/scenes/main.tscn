@@ -1,0 +1,118 @@
+[gd_scene load_steps=14 format=3 uid="uid://cps8fdt44gyox"]
+
+[ext_resource type="Script" path="res://Generator.gd" id="1_3ik3g"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_e1xo8"]
+[ext_resource type="PackedScene" uid="uid://k7yumkgdwx07" path="res://scenes/gdplayer.tscn" id="3_sdnwe"]
+[ext_resource type="AudioStream" uid="uid://cc7n7hfmd3kno" path="res://Sounds/music/music.mp3" id="4_ta4fq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_l5t6o"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_om3sb"]
+sky_material = SubResource("ProceduralSkyMaterial_l5t6o")
+
+[sub_resource type="Environment" id="Environment_uhxx0"]
+background_mode = 2
+sky = SubResource("Sky_om3sb")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.0313726, 0.25098, 0.305882, 1)
+
+[sub_resource type="Curve" id="Curve_2ov4l"]
+max_value = 1.5
+_data = [Vector2(0.0405618, 0.241785), 0.0, 0.0, 0, 0, Vector2(0.819326, 1.38527), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_tq58l"]
+curve = SubResource("Curve_2ov4l")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_coocp"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 12.0
+emission_ring_inner_radius = 10.0
+spread = 53.09
+gravity = Vector3(14, 0, 0)
+tangential_accel_min = -10.0
+tangential_accel_max = 10.0
+scale_min = 0.6
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_tq58l")
+color = Color(0.490196, 0.85098, 0.956863, 1)
+hue_variation_min = -0.15
+hue_variation_max = 0.13
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tsb5b"]
+vertex_color_use_as_albedo = true
+emission_enabled = true
+backlight_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_i4tmr"]
+material = SubResource("StandardMaterial3D_tsb5b")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kegxx"]
+size = Vector3(10, 1, 10)
+
+[node name="WorldStage" type="Node3D"]
+script = ExtResource("1_e1xo8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uhxx0")
+
+[node name="Generator" type="Node3D" parent="."]
+script = ExtResource("1_3ik3g")
+
+[node name="pause_menu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="pause_menu"]
+layout_mode = 0
+offset_left = 477.0
+offset_top = 278.0
+offset_right = 674.0
+offset_bottom = 339.0
+theme_override_font_sizes/font_size = 25
+text = "Quit Game"
+
+[node name="GDPlayer" parent="." instance=ExtResource("3_sdnwe")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 4, 0)
+floor_constant_speed = true
+floor_max_angle = 3.14159
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="GDPlayer"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 50, 4.764, 4.37114e-06)
+cast_shadow = 0
+amount = 100
+lifetime = 4.0
+speed_scale = 1.2
+explosiveness = 0.6
+randomness = 0.79
+process_material = SubResource("ParticleProcessMaterial_coocp")
+draw_pass_1 = SubResource("SphereMesh_i4tmr")
+
+[node name="BGMusic" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_ta4fq")
+autoplay = true
+
+[node name="death_floor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.75862, 0)
+metadata/is_hurt = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="death_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_kegxx")
+
+[connection signal="pressed" from="pause_menu/Button" to="." method="_on_button_pressed"]
